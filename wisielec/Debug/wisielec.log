@@ -1,4 +1,1 @@
-﻿  cmd.cpp
-C:\Users\nomys\source\repos\wisielec\wisielec\cmd.cpp(266,21): error C2660: "print_csv": funkcja nie przyjmuje 2 argumentów
-C:\Users\nomys\source\repos\wisielec\wisielec\cmd.h(74,6): message : zobacz deklarację „print_csv”
-C:\Users\nomys\source\repos\wisielec\wisielec\cmd.cpp(270,1): error C2143: błąd składniowy: brakuje „;” przed „}”
+﻿  wisielec.vcxproj -> C:\Users\nomys\source\repos\wisielec\Debug\wisielec.exe

@@ -71,5 +71,6 @@ void printStatus(std::vector<char> invalid_guess, std::vector<char>hashed_vector
 void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector);
 std::vector<std::vector<std::string>> read_csv(std::string filename);
 std::string GetKeyword(std::vector<std::vector<std::string>> csv, int category);
-void print_csv(std::vector<std::vector<std::string>> in);
+void print_csv(std::vector<std::vector<std::string>> in, bool printKeywords);
+int pickCategory(std::vector<std::vector<std::string>> in);
 #endif CMD_H

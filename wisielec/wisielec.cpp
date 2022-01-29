@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     //Load files
     //Game start
     vector<vector<string>> csv = read_csv(gf.input_file_path);
-    print_csv(csv);
+   print_csv(csv, true);
     GameLoop(csv);
            //wypisanie instrukcji
            // stworzenie gracza

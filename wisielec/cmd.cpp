@@ -263,15 +263,30 @@ int StringToInt(string dirty )
 int pickCategory(std::vector<std::vector<std::string>> in)
 {
 	//print categories
-	print_csv(in, false)
+	print_csv(in, false);
+	int categoryID;
+	string dirty;
+	while (true)
+	{
+		cout << "Pick a number coresponding to the category or press 0 to pick a random one. " << endl;
+		cin >> dirty;
+		categoryID = StringToInt(dirty);
+		if (categoryID > in.size() || categoryID < 0)
+		{
+			cout << "No valid category found. Please select another valid one. \n";
+		}
+		else
+		{
+			break;
+		}
+	}
 	//while case wybor
 	//return wybor 
-	
+	return categoryID-1;
 };
 void NewGame(std::vector<std::vector<std::string>> in)
 {
-	//int pick = pickCategory
-	string keyword = GetKeyword(in,1);
+	string keyword = GetKeyword(in, pickCategory(in));
 	//Typ gry
 	//string keyword = getKeywordFromFile()
 	int keyword_size = keyword.length();
@@ -357,12 +372,14 @@ void GameLoop(std::vector<std::vector<std::string>> in)
 };
 string GetKeyword(vector<vector<string>> csv,int category) {
 	
-	if (category == 0 )
+	int tmp = category;
+	if (tmp<= 0 )
 	{
-		//randomizowanie kategorii
-		//cateogry=getrandom category
+		tmp= 1 + rand() % (csv.size() - 1);
+	
 	}
-	vector<string>chosenCategory = csv.at(category);
+	vector<string>chosenCategory = csv.at(tmp);
+	cout << "Your category is " << chosenCategory.front()<<endl;
 	int random = 1+ rand() % (chosenCategory.size()-1);
 	return chosenCategory.at(random);
 	//randomizowanie hasla 
@@ -396,14 +413,14 @@ void print_csv(vector<vector<string>> in, bool printKeywords=false)
 	{
 		// Categories
 		std::vector<string> categories = in.at(i);
-		cout << "Category: " << categories.front();
+		cout << "-> " << i + 1 << " Category: " << categories.front();
 		if (printKeywords){
 			cout << "Keywords: ";
 			for (int j = 1; j < static_cast<int>(categories.size()); j++)
 			{
-				cout << " [-> "<< j << " ]   " << "Category: [ " << categories.at(j) << " ] ";
+				cout << "[ " << categories.at(j) << " ] ";
 			}
-			cout << endl;
 		}
+		cout << endl;
 	}
 }
