@@ -2,7 +2,8 @@
 #define CMD_H
 #include <string>
 #include <iostream>
-#include<vector>
+#include <vector>
+#include <fstream>
 #define MAX_TRY_COUNT 12
 struct cmdParam
 {
@@ -65,8 +66,10 @@ void instruction();
 void printHangman(int score);
 void printMenu();
 int StringToInt(std::string dirty);
-void GameLoop();
-void NewPlayer();
+void GameLoop(std::vector<std::vector<std::string>> in);
 void printStatus(std::vector<char> invalid_guess, std::vector<char>hashed_vector );
 void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector);
+std::vector<std::vector<std::string>> read_csv(std::string filename);
+std::string GetKeyword(std::vector<std::vector<std::string>> csv, int category);
+void print_csv(std::vector<std::vector<std::string>> in);
 #endif CMD_H

@@ -4,19 +4,23 @@
 #include <iostream>
 #include "cmd.h"
 using namespace std; 
+
 int main(int argc, char** argv)
 {
+    srand(time(nullptr));
     gameFiles gf = parseOrDie(argc, argv);
-    cout << "Game files: " << gf.input_file_path << " | " << gf.output_file_path << endl;
+    // cout << "Game files: " << gf.input_file_path << " | " << gf.output_file_path << endl;
     //Load files
     //Game start
- 
-    GameLoop();
+    vector<vector<string>> csv = read_csv(gf.input_file_path);
+    print_csv(csv);
+    GameLoop(csv);
            //wypisanie instrukcji
            // stworzenie gracza
            // wybor kategorii/losowanie
            // nowa gra
-           // koniec programu    
+           // koniec programu  
+       
     //Save results
     return 0;
 }

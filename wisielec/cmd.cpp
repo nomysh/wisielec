@@ -242,12 +242,15 @@ void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector)
 {
 	if (hashed_vector == keyword_vector)
 	{
-		
+		cout << "Codeword: " << endl;
+		printVector(keyword_vector);
 		cout << "Congratulations! You have guess the secret word corectly!\n";
+		// wins++
 	}
 	else
 	{
 		cout << "Oh no! You've lost! Best luck next time\n";
+		//loses++
 	}
 };
 int StringToInt(string dirty )
@@ -257,9 +260,18 @@ int StringToInt(string dirty )
 	dirty_Value >> clean;
 	return clean;
 };
-void NewGame()
+int pickCategory(std::vector<std::vector<std::string>> in)
 {
-	string keyword = "rabarbar";
+	//print categories
+	print_csv(in, false)
+	//while case wybor
+	//return wybor 
+	
+};
+void NewGame(std::vector<std::vector<std::string>> in)
+{
+	//int pick = pickCategory
+	string keyword = GetKeyword(in,1);
 	//Typ gry
 	//string keyword = getKeywordFromFile()
 	int keyword_size = keyword.length();
@@ -308,8 +320,7 @@ void NewGame()
 	end_game(hashed_vector, keyword_vector);
 	}
 
-
-void GameLoop()
+void GameLoop(std::vector<std::vector<std::string>> in)
 {
 	string choice;
 	while (true)
@@ -324,7 +335,8 @@ void GameLoop()
 			break;
 		case 1:
 			NewPlayer();
-			NewGame();
+
+			NewGame(in);
 			break;
 		case 2:
 			//statystyki 
@@ -343,3 +355,55 @@ void GameLoop()
 		}
 	}
 };
+string GetKeyword(vector<vector<string>> csv,int category) {
+	
+	if (category == 0 )
+	{
+		//randomizowanie kategorii
+		//cateogry=getrandom category
+	}
+	vector<string>chosenCategory = csv.at(category);
+	int random = 1+ rand() % (chosenCategory.size()-1);
+	return chosenCategory.at(random);
+	//randomizowanie hasla 
+	
+};
+vector<vector<string>> read_csv(std::string filename) {
+	std::vector<string> row;
+	vector<vector<string>> result;
+	std::ifstream myFile(filename);
+
+	if (!myFile.is_open()) throw std::runtime_error("Could not open file");
+	string line, item;
+
+	if (myFile.is_open()) {
+		while (getline(myFile, line))
+		{
+			row.clear();
+			stringstream str(line);
+			while (getline(str, item, ';'))
+				row.push_back(item);
+			result.push_back(row);
+		}
+	}
+	myFile.close();
+	return result;
+}
+
+void print_csv(vector<vector<string>> in, bool printKeywords=false)
+{
+	for(int i = 0; i < static_cast<int>(in.size()); i++)
+	{
+		// Categories
+		std::vector<string> categories = in.at(i);
+		cout << "Category: " << categories.front();
+		if (printKeywords){
+			cout << "Keywords: ";
+			for (int j = 1; j < static_cast<int>(categories.size()); j++)
+			{
+				cout << " [-> "<< j << " ]   " << "Category: [ " << categories.at(j) << " ] ";
+			}
+			cout << endl;
+		}
+	}
+}
