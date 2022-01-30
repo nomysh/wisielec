@@ -1,1 +1,3 @@
-﻿  wisielec.vcxproj -> C:\Users\nomys\source\repos\wisielec\Debug\wisielec.exe
+﻿  wisielec.cpp
+C:\Users\nomys\source\repos\wisielec\wisielec\wisielec.cpp(10,15): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+  wisielec.vcxproj -> C:\Users\nomys\source\repos\wisielec\Debug\wisielec.exe

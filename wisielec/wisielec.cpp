@@ -9,12 +9,16 @@ int main(int argc, char** argv)
 {
     srand(time(nullptr));
     gameFiles gf = parseOrDie(argc, argv);
-    // cout << "Game files: " << gf.input_file_path << " | " << gf.output_file_path << endl;
     //Load files
     //Game start
-    vector<vector<string>> csv = read_csv(gf.input_file_path);
-   print_csv(csv, true);
-    GameLoop(csv);
+   vector<vector<string>> categories_keywords = read_csv(gf.input_file_path, true);
+   vector<vector<string>> statistics = read_csv(gf.output_file_path, false);
+   vector<player> PlayerList = LoadPlayersFromCSV(statistics);
+   GameLoop(categories_keywords, &PlayerList);
+   write_csv(gf.output_file_path,&PlayerList);
+   //print_csv(statistics,true);
+   //int x = pickCategory(categories_keywords);
+   //cout << GetKeyword(categories_keywords,x);
            //wypisanie instrukcji
            // stworzenie gracza
            // wybor kategorii/losowanie

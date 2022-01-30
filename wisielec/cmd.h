@@ -4,7 +4,11 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include<cctype>
+#include<algorithm>
 #define MAX_TRY_COUNT 12
+#define MAX_NAME_SIZE 16
+#define CSV_SELECTOR ';'
 struct cmdParam
 {
 	std::string short_name;
@@ -59,6 +63,12 @@ struct player
 		this->wins = wins_input;
 		this->loses = loses_input;
 	};
+	player()
+	{
+		this->name = "";
+		this->wins = 0;
+		this->loses = 0;
+	};
 };
 void printParam(cmdParam in);
 gameFiles parseOrDie(int argc, char** argv);
@@ -66,11 +76,18 @@ void instruction();
 void printHangman(int score);
 void printMenu();
 int StringToInt(std::string dirty);
-void GameLoop(std::vector<std::vector<std::string>> in);
+void GameLoop(std::vector<std::vector<std::string>> in, std::vector<player> *PlayerList);
 void printStatus(std::vector<char> invalid_guess, std::vector<char>hashed_vector );
-void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector);
-std::vector<std::vector<std::string>> read_csv(std::string filename);
+void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P);
+std::vector<std::vector<std::string>> read_csv(std::string filename, bool lower);
 std::string GetKeyword(std::vector<std::vector<std::string>> csv, int category);
 void print_csv(std::vector<std::vector<std::string>> in, bool printKeywords);
 int pickCategory(std::vector<std::vector<std::string>> in);
+player FindPlayer(std::vector<player>*List, std::string name);
+std::vector<player>LoadPlayersFromCSV(std::vector<std::vector<std::string>> in);
+void PrintPlayer(player *P);
+void UpdatePlayerList(std::vector<player>* List, player* p);
+void printPlayerList(std::vector<player>* List);
+void sortPlayerList(std::vector<player>* List);
+void write_csv(std::string filepath, std::vector<player>* List);
 #endif CMD_H

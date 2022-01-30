@@ -196,19 +196,25 @@ void printStatus(vector<char> invalid_guess, vector<char>hashed_vector)
 	printVector(hashed_vector);
 };
 
-void NewPlayer()
+player NewPlayer(vector<player> *PlayerList)
 {
 	string name;
 	char confirm;
 	bool exit = false;
-	cout << "Welcome to Hangman game. Please insert your name: \n";
-	cin >> name;
 	while (true)
 	{
-		cout << "Is " << name << " correct?  (Y/N)" << endl;
-		cin >> confirm;
-		switch (confirm)
+		cout << "Welcome to Hangman game. Please insert your name: \n";
+		cin >> name;
+		if (name.size() > MAX_NAME_SIZE || name.size() == 0)
 		{
+			cout << "Your name is too long. Maximal character size is " << MAX_NAME_SIZE << endl;
+		}
+		else
+		{
+			cout << "Is " << name << " correct?  (Y/N)" << endl;
+			cin >> confirm;
+			switch (confirm)
+			{
 			case 'Y':
 			case 'y':
 				cout << "Good, now it's time to play\n\n" << endl;
@@ -216,18 +222,22 @@ void NewPlayer()
 				break;
 			case 'N':
 			case 'n':
-					cout << "Insert corect name: ";
-					cin >> name;
-					cout << "Is " << name << " correct?  (Y/N)" << endl;
-					cin >> confirm;
+				cout << "Insert corect name: ";
+				cin >> name;
+				cout << "Is " << name << " correct?  (Y/N)" << endl;
+				cin >> confirm;
 			default:
 				cout << "Unkown value. Please try again. Is " << name << " correct? (Y/N)" << endl;
 				cin >> confirm;
 				break;
+			}
 		}
+		
 		if (exit)
 			break;
 	}
+	player NewPlayer = FindPlayer(PlayerList, name);
+	return NewPlayer;
 };
 void printMenu()
 {
@@ -238,25 +248,27 @@ void printMenu()
 	cout << "-> 9 | Exit game " << endl;
 
 };
-void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector)
+void end_game(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P)
 {
 	if (hashed_vector == keyword_vector)
 	{
 		cout << "Codeword: " << endl;
 		printVector(keyword_vector);
 		cout << "Congratulations! You have guess the secret word corectly!\n";
-		// wins++
+		P->wins++;
 	}
 	else
 	{
 		cout << "Oh no! You've lost! Best luck next time\n";
-		//loses++
+		cout << "Correct anwser was " << endl;
+		printVector(keyword_vector);
+		P->loses++;
 	}
 };
 int StringToInt(string dirty )
 {
 	stringstream dirty_Value(dirty);
-	int clean = 0;
+	int clean=0;
 	dirty_Value >> clean;
 	return clean;
 };
@@ -282,9 +294,9 @@ int pickCategory(std::vector<std::vector<std::string>> in)
 	}
 	//while case wybor
 	//return wybor 
-	return categoryID-1;
+	return categoryID;
 };
-void NewGame(std::vector<std::vector<std::string>> in)
+void NewGame(std::vector<std::vector<std::string>> in, player *P)
 {
 	string keyword = GetKeyword(in, pickCategory(in));
 	//Typ gry
@@ -310,7 +322,7 @@ void NewGame(std::vector<std::vector<std::string>> in)
 
 		cout << "\n\n Enter your guess ";
 		cin >> guess;
-
+		guess = tolower(guess);
 		for (int i = 0; i < static_cast<int>(keyword.length()); i++)
 		{
 			if (guess == keyword[i])
@@ -332,11 +344,12 @@ void NewGame(std::vector<std::vector<std::string>> in)
 		guessed_char = false; 
 		printHangman(score);
 		}
-	end_game(hashed_vector, keyword_vector);
+	end_game(hashed_vector, keyword_vector, P);
 	}
 
-void GameLoop(std::vector<std::vector<std::string>> in)
+void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerList)
 {
+	player P;
 	string choice;
 	while (true)
 	{
@@ -349,12 +362,14 @@ void GameLoop(std::vector<std::vector<std::string>> in)
 			cout << "Input not understood. Please try again :) \n";
 			break;
 		case 1:
-			NewPlayer();
-
-			NewGame(in);
+			P = NewPlayer(PlayerList);
+			PrintPlayer(&P);
+			NewGame(in, &P);
+			UpdatePlayerList(PlayerList,&P);
 			break;
 		case 2:
-			//statystyki 
+			sortPlayerList(PlayerList);
+			printPlayerList(PlayerList);
 			break;
 		case 3:
 			instruction();
@@ -364,16 +379,12 @@ void GameLoop(std::vector<std::vector<std::string>> in)
 		default:
 			cout << "Invalid value. Please try again :)\n";
 			break;
-
-	
-
 		}
 	}
 };
 string GetKeyword(vector<vector<string>> csv,int category) {
-	
-	int tmp = category;
-	if (tmp<= 0 )
+	int tmp = category -1;
+	if (tmp< 0 )
 	{
 		tmp= 1 + rand() % (csv.size() - 1);
 	
@@ -385,7 +396,7 @@ string GetKeyword(vector<vector<string>> csv,int category) {
 	//randomizowanie hasla 
 	
 };
-vector<vector<string>> read_csv(std::string filename) {
+vector<vector<string>> read_csv(std::string filename, bool lower) {
 	std::vector<string> row;
 	vector<vector<string>> result;
 	std::ifstream myFile(filename);
@@ -398,8 +409,17 @@ vector<vector<string>> read_csv(std::string filename) {
 		{
 			row.clear();
 			stringstream str(line);
-			while (getline(str, item, ';'))
+			while (getline(str, item, CSV_SELECTOR))
+			{
+				if (lower)
+				{
+					std::transform(item.begin(), item.end(), item.begin(),
+						[](unsigned char c) { return std::tolower(c); });
+				}
+				
 				row.push_back(item);
+			}
+
 			result.push_back(row);
 		}
 	}
@@ -407,6 +427,15 @@ vector<vector<string>> read_csv(std::string filename) {
 	return result;
 }
 
+void write_csv(string filepath,vector<player> * List) 
+{
+	fstream fout;
+	fout.open(filepath, ios::out | ios::trunc);
+	for (int i = 0; i < static_cast<int>(List->size()); i++)
+	{
+		fout << List->at(i).name << CSV_SELECTOR << List->at(i).wins << CSV_SELECTOR << List->at(i).loses << endl;
+	}
+};
 void print_csv(vector<vector<string>> in, bool printKeywords=false)
 {
 	for(int i = 0; i < static_cast<int>(in.size()); i++)
@@ -423,4 +452,69 @@ void print_csv(vector<vector<string>> in, bool printKeywords=false)
 		}
 		cout << endl;
 	}
+}
+vector<player>LoadPlayersFromCSV(vector<vector<string>> in)
+{
+	vector<player>PlayerList;
+	for (int i = 0; i < static_cast<int>(in.size()); i++)
+	{
+		std::vector<string> row = in.at(i);
+		
+		player NewPlayer = player(row.front(),StringToInt(row.at(1)), StringToInt(row.at(2)));
+		PlayerList.push_back(NewPlayer);
+	}
+	return PlayerList;
+}
+player FindPlayer(vector<player>* List, string name)
+{
+	player P = player(name);
+	for (int i = 0; i < static_cast<int>(List->size()); i++)
+	{
+		if (List->at(i).name == name)
+		{
+			P = List->at(i);
+		}
+
+	}
+	return P;
+}
+
+void PrintPlayer(player* P)
+{
+	cout << "Player " << P->name << " has " << P->wins << " wins and " << P->loses << " loses. " << endl;
+}
+
+void UpdatePlayerList(vector<player>* List, player* p)
+{
+	bool found = false;
+	for (int i = 0; i < static_cast<int>(List->size()); i++)
+	{
+		if (List->at(i).name == p->name)
+		{
+			List->at(i) = *p;
+			found = true;
+		}
+	}
+	if (!found) {
+		List->push_back(*p);
+	}
+}
+void printPlayerList(vector<player>* List)
+{
+	for (int i = 0; i < static_cast<int>(List->size()); i++)
+	{
+		cout << i+1 << " - >";
+		PrintPlayer(&List->at(i));
+	}
+}
+
+void sortPlayerList(vector<player>* List)
+{
+	sort(List->begin(), List->end(), [](player a, player b) {
+		if (a.wins == b.wins)
+		{
+			return a.loses < b.loses;
+		}
+		return a.wins > b.wins;
+		});
 }
