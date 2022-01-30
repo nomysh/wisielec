@@ -1,6 +1,6 @@
-﻿  cmd.cpp
-C:\Users\nomys\source\repos\wisielec\wisielec\cmd.cpp(303,18): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
-  wisielec.cpp
-C:\Users\nomys\source\repos\wisielec\wisielec\wisielec.cpp(10,14): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+﻿  functions.cpp
+C:\Users\nomys\source\repos\wisielec\wisielec\functions.cpp(295,18): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
+  main.cpp
+C:\Users\nomys\source\repos\wisielec\wisielec\main.cpp(10,14): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
   Generowanie kodu...
   wisielec.vcxproj -> C:\Users\nomys\source\repos\wisielec\Debug\wisielec.exe
