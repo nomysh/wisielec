@@ -7,35 +7,13 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    srand(time(nullptr));
-    gameFiles gf = parseOrDie(argc, argv);
-    //Load files
-    //Game start
+   srand(time(nullptr));
+   gameFiles gf = parseOrDie(argc, argv);
    vector<vector<string>> categories_keywords = read_csv(gf.input_file_path, true);
    vector<vector<string>> statistics = read_csv(gf.output_file_path, false);
    vector<player> PlayerList = LoadPlayersFromCSV(statistics);
    GameLoop(categories_keywords, &PlayerList);
    write_csv(gf.output_file_path,&PlayerList);
-   //print_csv(statistics,true);
-   //int x = pickCategory(categories_keywords);
-   //cout << GetKeyword(categories_keywords,x);
-           //wypisanie instrukcji
-           // stworzenie gracza
-           // wybor kategorii/losowanie
-           // nowa gra
-           // koniec programu  
-       
-    //Save results
+  
     return 0;
 }
-
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln

@@ -82,10 +82,7 @@ void instruction()
 	cout << "Your aim im the game is to prevent man from being hung." << endl;
 	cout << "Guess keyword by giving single characters." << endl;
 	cout << "Whenever you are mistaken, part of gallow is drawn. Guess the word before man is hanged!" << endl;
-	cout << "I===" << endl;
-	cout << "I  O" << endl;
-	cout << "I -|-" << endl;
-	cout << "I / /" << endl;
+	printHangman(MAX_TRY_COUNT);
 };
 void Clear()
 {
@@ -170,13 +167,13 @@ void printHangman(int score) {
 		cout << "I===" << endl;
 		cout << "I  O" << endl;
 		cout << "I -|-" << endl;
-		cout << "I / /" << endl;
-		cout << "I YOU ARE DEAD" << endl;
+		cout << "I / \\" << endl;
+		cout << "I" << endl;
+		cout << "I" << endl;
+		cout << "YOU ARE DEAD" << endl;
 		cout << "GAME OVER" << endl;
 		break;
 	}
-
-
 }
 void printVector(vector<char> in)
 {
@@ -198,7 +195,7 @@ void printStatus(vector<char> invalid_guess, vector<char>hashed_vector)
 
 player NewPlayer(vector<player> *PlayerList)
 {
-	string name;
+	string name, dirty;
 	char confirm;
 	bool exit = false;
 	while (true)
@@ -212,7 +209,13 @@ player NewPlayer(vector<player> *PlayerList)
 		else
 		{
 			cout << "Is " << name << " correct?  (Y/N)" << endl;
-			cin >> confirm;
+			cin >> dirty;
+			if (dirty.size() > 1)
+			{
+				cout << "Input not understood " << endl;
+				continue;
+			}
+			confirm = dirty.front();
 			switch (confirm)
 			{
 			case 'Y':
@@ -225,10 +228,23 @@ player NewPlayer(vector<player> *PlayerList)
 				cout << "Insert corect name: ";
 				cin >> name;
 				cout << "Is " << name << " correct?  (Y/N)" << endl;
-				cin >> confirm;
+				cin >> dirty;
+				if (dirty.size() > 1)
+				{
+					cout << "Input not understood " << endl;
+					continue;
+				}
+				confirm = dirty.front();
+
 			default:
 				cout << "Unkown value. Please try again. Is " << name << " correct? (Y/N)" << endl;
-				cin >> confirm;
+				cin >> dirty;
+				if (dirty.size() > 1)
+				{
+					cout << "Input not understood " << endl;
+					continue;
+				}
+				confirm = dirty.front();
 				break;
 			}
 		}
@@ -275,15 +291,16 @@ int StringToInt(string dirty )
 int pickCategory(std::vector<std::vector<std::string>> in)
 {
 	//print categories
+	cout << "-> 1 Random Category" << endl;
 	print_csv(in, false);
 	int categoryID;
 	string dirty;
 	while (true)
 	{
-		cout << "Pick a number coresponding to the category or press 0 to pick a random one. " << endl;
+		cout << "Pick a number coresponding to the category or press 1 to pick a random one. " << endl;
 		cin >> dirty;
 		categoryID = StringToInt(dirty);
-		if (categoryID > in.size() || categoryID < 0)
+		if (categoryID > in.size()+1 || categoryID < 1)
 		{
 			cout << "No valid category found. Please select another valid one. \n";
 		}
@@ -383,10 +400,10 @@ void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerLi
 	}
 };
 string GetKeyword(vector<vector<string>> csv,int category) {
-	int tmp = category -1;
-	if (tmp< 0 )
+	int tmp = category-2;
+	if (category==1 )
 	{
-		tmp= 1 + rand() % (csv.size() - 1);
+		tmp= 1 + rand() % (csv.size()-1 );
 	
 	}
 	vector<string>chosenCategory = csv.at(tmp);
@@ -442,7 +459,7 @@ void print_csv(vector<vector<string>> in, bool printKeywords=false)
 	{
 		// Categories
 		std::vector<string> categories = in.at(i);
-		cout << "-> " << i + 1 << " Category: " << categories.front();
+		cout << "-> " << i + 2 << " Category: " << categories.front();
 		if (printKeywords){
 			cout << "Keywords: ";
 			for (int j = 1; j < static_cast<int>(categories.size()); j++)
