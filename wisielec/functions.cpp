@@ -37,8 +37,8 @@ gameFiles parseOrDie(int argc, char** argv)
 			//cout << argv[i] << endl;
 			if (argv[i] == help.short_name || argv[i] == help.long_name)
 			{
-				cout << "Please provide input and outfiles with their directory" << endl;
-				cout << "For example: -w file1.txt -i file2.txt" << endl;
+				cout << "Welcome to the Hangman Game. Please provide input and outfiles with their directory" << endl;
+				cout << "For example: -i file1.txt -w file2.txt" << endl;
 			}
 			if (argv[i] == input.short_name || argv[i] == input.long_name)
 			{
@@ -69,7 +69,7 @@ gameFiles parseOrDie(int argc, char** argv)
 	}
 	else
 	{
-		cout << "help guide\n";
+		cout << "One file is missing \n";
 		exit(1);
 	}
 	
@@ -282,7 +282,6 @@ int StringToInt(string dirty )
 };
 int pickCategory(std::vector<std::vector<std::string>> in)
 {
-	//print categories
 	cout << "-> 1 Random Category" << endl;
 	csvPrint(in, false);
 	int categoryID;
@@ -301,19 +300,15 @@ int pickCategory(std::vector<std::vector<std::string>> in)
 			break;
 		}
 	}
-	//while case wybor
-	//return wybor 
 	return categoryID;
 };
 void NewGame(std::vector<std::vector<std::string>> in, player *P)
 {
 	string keyword = GetKeyword(in, pickCategory(in));
-	//Typ gry
-	//string keyword = getKeywordFromFile()
 	int keyword_size = keyword.length();
-	vector<char>keyword_vector; //codeword  
-	vector<char>invalid_guess; //incorrect
-	vector<char>hashed_vector; //answer
+	vector<char>keyword_vector;   
+	vector<char>invalid_guess; 
+	vector<char>hashed_vector; 
 	char guess;
 	int score = 0;
 	bool guessed_char = false; 
@@ -321,14 +316,10 @@ void NewGame(std::vector<std::vector<std::string>> in, player *P)
 	{
 		keyword_vector.push_back(keyword.c_str()[i]);
 		hashed_vector.push_back('*');
-		//cout << "Keyword["<<i<< "] " << keyword_vector.at(i)<< " ";
-		//cout << hashed_vector.at(i);
 	}
-	
-	while ( hashed_vector!=keyword_vector && score < MAX_TRY_COUNT) //answers!= keyword && misses<Max_try_count 
+	while ( hashed_vector!=keyword_vector && score < MAX_TRY_COUNT) 
 	{
 		printStatus(invalid_guess, hashed_vector);
-
 		cout << "\n\n Enter your guess ";
 		cin >> guess;
 		guess = tolower(guess);
@@ -401,8 +392,6 @@ string GetKeyword(vector<vector<string>> csv,int category) {
 	cout << "Your category is " << chosenCategory.front()<<endl;
 	int random = 1+ rand() % (chosenCategory.size()-1);
 	return chosenCategory.at(random);
-	//randomizowanie hasla 
-	
 };
 vector<vector<string>> csvRead(std::string filename, bool lower) {
 	std::vector<string> row;
