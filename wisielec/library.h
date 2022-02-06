@@ -22,19 +22,19 @@ struct cmdParam
 {
 	/** skrocona wersja flagi, reprezentuje forme -f*/
 	std::string short_name; 
-	/** Pelna nazwa flagi, repzentuje forme --flag*/
+	/** Pelna nazwa flagi, reprezentuje forme --flag*/
 	std::string long_name;
 	/** Opis danej flagi, komunikat wyswietlany uzytkownikowi*/
 	std::string description;
 	
-	/** domyslny konstruktor, tworzy zmienna z pustymi polami */
+	/** domyslny konstruktor, tworzy zmienna z pustymi polami. */
 	cmdParam() {
 		this->short_name = "";
 		this->long_name = "";
 		this->description = "";
 
 	};
-	/**konstruktor zlozony z krotkiej nazwy -f, dlugiej nazwy --flag oraz jej opisu */
+	/**konstruktor zlozony z krotkiej nazwy -f, dlugiej nazwy --flag oraz jej opisu. */
 	cmdParam(std::string s, std::string l, std::string desc) {
 		this->short_name = s;
 		this->long_name = l;
@@ -50,14 +50,14 @@ struct gameFiles
 	//** Sciezka do pliku wyjsciowego*/
 	std::string output_file_path;
 
-	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego */
+	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego. */
 	gameFiles()
 	{
 		this->input_file_path = "";
 		this->output_file_path = "";
 	};
 	
-	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego 
+	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego. 
 	@param in plik wejsciowy
 	@param out plik wyjsciowy*/
 	gameFiles(std::string in, std::string out)
@@ -67,7 +67,7 @@ struct gameFiles
 	};
 };
 
-/** struktura bedaca interpretacja profilu gracza (imie, jego zwyciestwa i porazki)*/
+/** struktura bedaca interpretacja profilu gracza (imie, jego zwyciestwa i porazki).*/
 struct player 
 {
 	/** Imie gracza*/
@@ -77,7 +77,7 @@ struct player
 	/** liczba przegranych gracza*/
 	int loses; 
 
-	/** domyslny konstruktor, tworzy gracza z pustymi statystykami (wygrane oraz przegrane)
+	/** domyslny konstruktor, tworzy gracza z pustymi statystykami (wygrane oraz przegrane).
 	@param name_input imie gracza
 	*/
 	player(std::string name_input)
@@ -87,7 +87,7 @@ struct player
 		this->loses = 0;
 	};
 	
-	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane) importowany z pliku 
+	/** Konstruktor zlozony z imienia gracza oraz jego wyniku (wygrane oraz przegrane) importowany z pliku. 
 	@param name_input imie gracza
 	@param wins_input liczba zwyciestw gracza 
 	@param loses_input liczba porazek gracza
@@ -114,7 +114,7 @@ void printParam(cmdParam in);
 /** Funcja sprawdza czy otrzymany string zaczyna sie od '-', czy jest flaga.
 @param input wskaznik na pierwszy element string.
 @return s zwraca oryginalny input jako string.
-		  zwraca pusty string .
+		  zwraca pusty string.
 */
 std::string isStringFlag(char* input);
 
@@ -150,7 +150,7 @@ int stringToInt(std::string dirty);
 */
 void gameLoop(std::vector<std::vector<std::string>> in, std::vector<player> *PlayerList);
 
-/** Funkcja drukuje na ekran Nieprawdilowe znaki oraz zakodowane haslo.
+/** Funkcja drukuje na ekran nieprawdilowe znaki oraz zakodowane haslo.
 @param invalid_guess niepoprawne znaki.
 @param hashed_vector zakodowane haslo.
 */
