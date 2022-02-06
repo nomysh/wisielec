@@ -1,0 +1,5 @@
+andrzej;5;0
+Andrzej;2;0
+sylwia;1;0
+szymon;1;0
+Ilona;0;1
