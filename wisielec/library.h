@@ -26,12 +26,15 @@ struct cmdParam
 	std::string long_name;
 	/** Opis danej flagi, komunikat wyswietlany uzytkownikowi*/
 	std::string description;
+	
+	/** domyslny konstruktor, tworzy zmienna z pustymi polami */
 	cmdParam() {
 		this->short_name = "";
 		this->long_name = "";
 		this->description = "";
 
 	};
+	/**konstruktor zlozony z krotkiej nazwy -f, dlugiej nazwy --flag oraz jej opisu */
 	cmdParam(std::string s, std::string l, std::string desc) {
 		this->short_name = s;
 		this->long_name = l;
@@ -64,7 +67,7 @@ struct gameFiles
 	};
 };
 
-/** struktura trzymajaca imie gracza, jego zwyciestwa i porazki*/
+/** struktura bedaca interpretacja profilu gracza (imie, jego zwyciestwa i porazki)*/
 struct player 
 {
 	/** Imie gracza*/
@@ -74,7 +77,7 @@ struct player
 	/** liczba przegranych gracza*/
 	int loses; 
 
-	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane)
+	/** domyslny konstruktor, tworzy gracza z pustymi statystykami (wygrane oraz przegrane)
 	@param name_input imie gracza
 	*/
 	player(std::string name_input)
@@ -84,7 +87,7 @@ struct player
 		this->loses = 0;
 	};
 	
-	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane)
+	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane) importowany z pliku 
 	@param name_input imie gracza
 	@param wins_input liczba zwyciestw gracza 
 	@param loses_input liczba porazek gracza
