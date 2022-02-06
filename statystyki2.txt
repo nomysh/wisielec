@@ -1,5 +1,12 @@
+Al@n;10;9
+VIKI;8;1
+Lucas;7;2
+Michal;6;3
 andrzej;5;0
+DoMiNik;5;5
+Ilona;4;1
+zuza;4;3
 Andrzej;2;0
-sylwia;1;0
-szymon;1;0
-Ilona;0;1
+sylwia;2;5
+Marek;1;0
+szymon;1;5
