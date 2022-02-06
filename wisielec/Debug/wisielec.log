@@ -1,3 +1,3 @@
 ﻿  functions.cpp
-C:\Users\nomys\source\repos\wisielec\wisielec\functions.cpp(294,18): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
+C:\Users\nomys\source\repos\wisielec\wisielec\functions.cpp(293,18): warning C4018: ">": niezgodność typu ze znakiem/bez znaku
   wisielec.vcxproj -> C:\Users\nomys\source\repos\wisielec\Debug\wisielec.exe

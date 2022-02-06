@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-string ParseFile(char* input)
+string IsStringFlag(char* input)
 {
 	string s = input;
 	if (s.compare(0,1,"-") == 0)
@@ -43,7 +43,7 @@ gameFiles parseOrDie(int argc, char** argv)
 			if (argv[i] == input.short_name || argv[i] == input.long_name)
 			{
 				input_found = true;
-				input_file_path = ParseFile(argv[i + 1]);
+				input_file_path = IsStringFlag(argv[i + 1]);
 				if (input_file_path == "")
 				{
 					cout << "input flag provided, but no file was given. Exiting\n";
@@ -53,7 +53,7 @@ gameFiles parseOrDie(int argc, char** argv)
 			if (argv[i] == output.short_name || argv[i] == output.long_name)
 			{
 				output_found = true;
-				output_file_path = ParseFile(argv[i + 1]);
+				output_file_path = IsStringFlag(argv[i + 1]);
 				if (output_file_path == "")
 				{
 					cout << "input flag provided, but no file was given. Exiting\n";
@@ -62,7 +62,6 @@ gameFiles parseOrDie(int argc, char** argv)
 			}
 		}
 	}
-	cout << input_file_path << "|" << output_file_path << endl;
 	if (input_found == true && output_found == true)
 	{
 		return gameFiles(input_file_path, output_file_path);
@@ -275,15 +274,15 @@ void EndGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, pl
 };
 int StringToInt(string dirty )
 {
-	stringstream dirty_Value(dirty);
-	int clean=0;
-	dirty_Value >> clean;
-	return clean;
+	stringstream dirty_Value(dirty); //use stringstream class to convert a string to int, dirty string to convert
+	int clean=0; 
+	dirty_Value >> clean; //temp variable holding value of string is assigned to clean
+	return clean; //returns value of string as a int 
 };
 int pickCategory(std::vector<std::vector<std::string>> in)
 {
 	cout << "-> 1 Random Category" << endl;
-	csvPrint(in, false);
+	csvPrint(in);
 	int categoryID;
 	string dirty;
 	while (true)
@@ -357,9 +356,6 @@ void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerLi
 
 		switch (StringToInt(choice))
 		{
-		case 0:
-			cout << "Input not understood. Please try again :) \n";
-			break;
 		case 1:
 			P = NewPlayer(PlayerList);
 			PrintPlayer(&P);
@@ -376,7 +372,7 @@ void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerLi
 		case 9:
 			return;
 		default:
-			cout << "Invalid value. Please try again :)\n";
+			cout << "Invalid value. Please try again. \n";
 			break;
 		}
 	}
@@ -432,20 +428,12 @@ void csvWrite(string filepath,vector<player> * List)
 		fout << List->at(i).name << CSV_SELECTOR << List->at(i).wins << CSV_SELECTOR << List->at(i).loses << endl;
 	}
 };
-void csvPrint(vector<vector<string>> in, bool printKeywords=false)
+void csvPrint(vector<vector<string>> in)
 {
 	for(int i = 0; i < static_cast<int>(in.size()); i++)
 	{
-		// Categories
 		std::vector<string> categories = in.at(i);
 		cout << "-> " << i + 2 << " Category: " << categories.front();
-		if (printKeywords){
-			cout << "Keywords: ";
-			for (int j = 1; j < static_cast<int>(categories.size()); j++)
-			{
-				cout << "[ " << categories.at(j) << " ] ";
-			}
-		}
 		cout << endl;
 	}
 }
