@@ -3,7 +3,7 @@
 #include<vector>
 using namespace std;
 
-string IsStringFlag(char* input)
+string isStringFlag(char* input)
 {
 	string s = input;
 	if (s.compare(0,1,"-") == 0)
@@ -43,7 +43,7 @@ gameFiles parseOrDie(int argc, char** argv)
 			if (argv[i] == input.short_name || argv[i] == input.long_name)
 			{
 				input_found = true;
-				input_file_path = IsStringFlag(argv[i + 1]);
+				input_file_path = isStringFlag(argv[i + 1]);
 				if (input_file_path == "")
 				{
 					cout << "input flag provided, but no file was given. Exiting\n";
@@ -53,7 +53,7 @@ gameFiles parseOrDie(int argc, char** argv)
 			if (argv[i] == output.short_name || argv[i] == output.long_name)
 			{
 				output_found = true;
-				output_file_path = IsStringFlag(argv[i + 1]);
+				output_file_path = isStringFlag(argv[i + 1]);
 				if (output_file_path == "")
 				{
 					cout << "input flag provided, but no file was given. Exiting\n";
@@ -184,7 +184,7 @@ void printStatus(vector<char> invalid_guess, vector<char>hashed_vector)
 
 	printVector(hashed_vector);
 };
-player NewPlayer(vector<player> *PlayerList)
+player newPlayer(vector<player> *PlayerList)
 {
 	string name, dirty;
 	char confirm;
@@ -243,7 +243,7 @@ player NewPlayer(vector<player> *PlayerList)
 		if (exit)
 			break;
 	}
-	player NewPlayer = FindPlayer(PlayerList, name);
+	player NewPlayer = findPlayer(PlayerList, name);
 	return NewPlayer;
 };
 void printMenu()
@@ -255,7 +255,7 @@ void printMenu()
 	cout << "-> 9 | Exit game " << endl;
 
 };
-void EndGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P)
+void endGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P)
 {
 	if (hashed_vector == keyword_vector)
 	{
@@ -272,7 +272,7 @@ void EndGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, pl
 		P->loses++;
 	}
 };
-int StringToInt(string dirty )
+int stringToInt(string dirty )
 {
 	stringstream dirty_Value(dirty); //use stringstream class to convert a string to int, dirty string to convert
 	int clean=0; 
@@ -289,7 +289,7 @@ int pickCategory(std::vector<std::vector<std::string>> in)
 	{
 		cout << "Pick a number coresponding to the category or press 1 to pick a random one. " << endl;
 		cin >> dirty;
-		categoryID = StringToInt(dirty);
+		categoryID = stringToInt(dirty);
 		if (categoryID > in.size()+1 || categoryID < 1)
 		{
 			cout << "No valid category found. Please select another valid one. \n";
@@ -301,9 +301,9 @@ int pickCategory(std::vector<std::vector<std::string>> in)
 	}
 	return categoryID;
 };
-void NewGame(std::vector<std::vector<std::string>> in, player *P)
+void newGame(std::vector<std::vector<std::string>> in, player *P)
 {
-	string keyword = GetKeyword(in, pickCategory(in));
+	string keyword = getKeyword(in, pickCategory(in));
 	int keyword_size = keyword.length();
 	vector<char>keyword_vector;   
 	vector<char>invalid_guess; 
@@ -343,9 +343,9 @@ void NewGame(std::vector<std::vector<std::string>> in, player *P)
 		guessed_char = false; 
 		printHangman(score);
 		}
-	EndGame(hashed_vector, keyword_vector, P);
+	endGame(hashed_vector, keyword_vector, P);
 	}
-void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerList)
+void gameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerList)
 {
 	player P;
 	string choice;
@@ -354,13 +354,13 @@ void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerLi
 		printMenu();
 		cin >> choice; 
 
-		switch (StringToInt(choice))
+		switch (stringToInt(choice))
 		{
 		case 1:
-			P = NewPlayer(PlayerList);
-			PrintPlayer(&P);
-			NewGame(in, &P);
-			UpdatePlayerList(PlayerList,&P);
+			P = newPlayer(PlayerList);
+			printPlayer(&P);
+			newGame(in, &P);
+			updatePlayerList(PlayerList,&P);
 			break;
 		case 2:
 			sortPlayerList(PlayerList);
@@ -377,7 +377,7 @@ void GameLoop(std::vector<std::vector<std::string>> in, vector<player> *PlayerLi
 		}
 	}
 };
-string GetKeyword(vector<vector<string>> csv,int category) {
+string getKeyword(vector<vector<string>> csv,int category) {
 	int tmp = category-2;
 	if (category==1 )
 	{
@@ -437,19 +437,19 @@ void csvPrint(vector<vector<string>> in)
 		cout << endl;
 	}
 }
-vector<player>LoadPlayersFromCSV(vector<vector<string>> in)
+vector<player>loadPlayersFromCSV(vector<vector<string>> in)
 {
 	vector<player>PlayerList;
 	for (int i = 0; i < static_cast<int>(in.size()); i++)
 	{
 		std::vector<string> row = in.at(i);
 		
-		player NewPlayer = player(row.front(),StringToInt(row.at(1)), StringToInt(row.at(2)));
+		player NewPlayer = player(row.front(),stringToInt(row.at(1)), stringToInt(row.at(2)));
 		PlayerList.push_back(NewPlayer);
 	}
 	return PlayerList;
 }
-player FindPlayer(vector<player>* List, string name)
+player findPlayer(vector<player>* List, string name)
 {
 	player P = player(name);
 	for (int i = 0; i < static_cast<int>(List->size()); i++)
@@ -462,11 +462,11 @@ player FindPlayer(vector<player>* List, string name)
 	}
 	return P;
 }
-void PrintPlayer(player* P)
+void printPlayer(player* P)
 {
 	cout << "Player " << P->name << " has " << P->wins << " wins and " << P->loses << " loses. " << endl;
 }
-void UpdatePlayerList(vector<player>* List, player* p)
+void updatePlayerList(vector<player>* List, player* p)
 {
 	bool found = false;
 	for (int i = 0; i < static_cast<int>(List->size()); i++)
@@ -486,7 +486,7 @@ void printPlayerList(vector<player>* List)
 	for (int i = 0; i < static_cast<int>(List->size()); i++)
 	{
 		cout << i+1 << " - >";
-		PrintPlayer(&List->at(i));
+		printPlayer(&List->at(i));
 	}
 }
 void sortPlayerList(vector<player>* List)

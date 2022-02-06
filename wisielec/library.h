@@ -7,15 +7,24 @@
 #include <fstream>
 #include<cctype>
 #include<algorithm>
-#define MAX_TRY_COUNT 12 /** maksymalny prog bledow przy zgadywaniu hasla*/
-#define MAX_NAME_SIZE 16 /** maksymalna dlugosc imienia gracza */
-#define CSV_SELECTOR ';' /** znak specjalny oddzielajacy hasla w pliku*/
+
+/** maksymalny prog bledow przy zgadywaniu hasla*/
+#define MAX_TRY_COUNT 12
+
+/** maksymalna dlugosc imienia gracza */
+#define MAX_NAME_SIZE 16 
+
+/** znak specjalny oddzielajacy hasla w pliku*/
+#define CSV_SELECTOR ';' 
 
 /** struktura obslugujaca flagi*/
 struct cmdParam  
 {
-	std::string short_name;
+	/** skrocona wersja flagi, reprezentuje forme -f*/
+	std::string short_name; 
+	/** Pelna nazwa flagi, repzentuje forme --flag*/
 	std::string long_name;
+	/** Opis danej flagi, komunikat wyswietlany uzytkownikowi*/
 	std::string description;
 	cmdParam() {
 		this->short_name = "";
@@ -33,15 +42,21 @@ struct cmdParam
 /** struktura obslugujaca pliki wejsciowe i wyjsciowe, hasla i rekordy*/
 struct gameFiles 
 {
+	//** Sciezka do pliku wejsciowego*/
 	std::string input_file_path;
+	//** Sciezka do pliku wyjsciowego*/
 	std::string output_file_path;
 
+	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego */
 	gameFiles()
 	{
 		this->input_file_path = "";
 		this->output_file_path = "";
 	};
-
+	
+	/**Konstruktor zlozony z pliku wejsciowego oraz wyjsciowego 
+	@param in plik wejsciowy
+	@param out plik wyjsciowy*/
 	gameFiles(std::string in, std::string out)
 	{
 		this->input_file_path = in;
@@ -52,16 +67,28 @@ struct gameFiles
 /** struktura trzymajaca imie gracza, jego zwyciestwa i porazki*/
 struct player 
 {
+	/** Imie gracza*/
 	std::string name;
+	/** liczba wygranych gracza*/
 	int wins;
+	/** liczba przegranych gracza*/
 	int loses; 
 
+	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane)
+	@param name_input imie gracza
+	*/
 	player(std::string name_input)
 	{
 		this->name = name_input;
 		this->wins = 0;
 		this->loses = 0;
 	};
+	
+	/** Konstruktor zlony z imienia gracza oraz jego wyniku (wygrane oraz przegrane)
+	@param name_input imie gracza
+	@param wins_input liczba zwyciestw gracza 
+	@param loses_input liczba porazek gracza
+	*/
 	player(std::string name_input, int wins_input, int loses_input)
 	{
 		this->name = name_input;
@@ -86,11 +113,12 @@ void printParam(cmdParam in);
 @return s zwraca oryginalny input jako string.
 		  zwraca pusty string .
 */
-std::string IsStringFlag(char* input);
+std::string isStringFlag(char* input);
 
 /** Funkcja sprawdza, czy otrzymane pliki sa prawidlowe.
 * @param argc ile argumentow zostalo przekazanych do programu 
 * @param argv podane argumenty
+* @return gameFiles sciezka do pliku wejsciowego oraz wyjsciowego 
 */
 gameFiles parseOrDie(int argc, char** argv);
 
@@ -111,13 +139,13 @@ void printMenu();
 @param dirty wartosc stringa.
 @return clean wartosc string jako int.
 */
-int StringToInt(std::string dirty);
+int stringToInt(std::string dirty);
 
 /** Funckja obslugujaca menu gry.
 @param in vector vectorow zawierajacy kategorie oraz hasla.
 @param PlayerList lista graczy przeczytana z pliku.
 */
-void GameLoop(std::vector<std::vector<std::string>> in, std::vector<player> *PlayerList);
+void gameLoop(std::vector<std::vector<std::string>> in, std::vector<player> *PlayerList);
 
 /** Funkcja drukuje na ekran Nieprawdilowe znaki oraz zakodowane haslo.
 @param invalid_guess niepoprawne znaki.
@@ -130,7 +158,7 @@ void printStatus(std::vector<char> invalid_guess, std::vector<char>hashed_vector
 @param keyword_vector zgadywane haslo.
 @param P profil grajacego gracza.
 */
-void EndGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P);
+void endGame(std::vector<char>hashed_vector, std::vector<char>keyword_vector, player *P);
 
 /** Funkcja czyta z pliku wejsciowego kategorie oraz hasla, badz statystyki
 * @param filename nazwa czytanego pliku
@@ -143,10 +171,11 @@ std::vector<std::vector<std::string>> csvRead(std::string filename, bool lower);
 @param csv vector vectorow zawierajacy kategorie oraz hasla.
 @param cateogry numer wybranej kategorii.
 */
-std::string GetKeyword(std::vector<std::vector<std::string>> csv, int category);
+std::string getKeyword(std::vector<std::vector<std::string>> csv, int category);
 
 /** Funkcja drukuje na ekran zawartosc pliku
 @param in vector vectorow zawierajacy kategorie oraz hasla
+@return string  wybrana, badz wylosowana kategoria
 */
 void csvPrint(std::vector<std::vector<std::string>> in);
 
@@ -156,33 +185,32 @@ void csvPrint(std::vector<std::vector<std::string>> in);
 */
 int pickCategory(std::vector<std::vector<std::string>> in);
 
-/** Funkcja sprawdza czy gracz znajduje sie na liscie z pliku
+/** Funkcja szuka gracza w liscie. Jezeli istnieje zwraca jego profil, jezeli nie zwraca pusty profil
 @param List lista graczy
 @param name imie gracza 
 @return P imie gracza 
 */
-player FindPlayer(std::vector<player>*List, std::string name);
+player findPlayer(std::vector<player>*List, std::string name);
 
-/** Funkcja sprawdza czy gracz znajduje sie na liscie, czyta liste graczy z pliku
+/** Funkcja czyta liste graczy z pliku
 @param vector vectorow zawierajacy statystyki
-@return Lista Graczy
+@return P Lista Graczy
 */
-std::vector<player>LoadPlayersFromCSV(std::vector<std::vector<std::string>> in);
+std::vector<player>loadPlayersFromCSV(std::vector<std::vector<std::string>> in);
 
 /** Funkcja drukuje wynik danego gracza
 @param *P dane gracza
 */
-void PrintPlayer(player *P);
+void printPlayer(player *P);
 
 /** Funkcja aktualizuje liste graczy o nowy wynik
 @param List lista graczy
 @param p aktualny gracz
 */
-void UpdatePlayerList(std::vector<player>* List, player* p);
+void updatePlayerList(std::vector<player>* List, player* p);
 
 /** Funkcja drukuje na ekran liste graczy (ranking)
 @param List lista graczy
-@param p * aktualny gracz 
 */
 void printPlayerList(std::vector<player>* List);
 
@@ -192,7 +220,7 @@ void printPlayerList(std::vector<player>* List);
 void sortPlayerList(std::vector<player>* List);
 
 /** Funkcja zapisuje do pliku statystyki gracza 
-@param filepath nazwa pliku, 
+@param filepath sciezka do  pliku, 
 @param List lista graczy 
 */
 void csvWrite(std::string filepath, std::vector<player>* List);
@@ -201,16 +229,16 @@ void csvWrite(std::string filepath, std::vector<player>* List);
 @param in vector vectorow zawierajacy kategorie oraz hasla
 @param P profil gracza
 */
-void NewGame(std::vector<std::vector<std::string>> in, player* P);
+void newGame(std::vector<std::vector<std::string>> in, player* P);
 
 /** Funkcja umozliwia zalogowanie sie do gry 
 @param PlayerLista lista graczy
-@return profil nowego gracza
+@return NewPlayer profil nowego gracza
 */
-player NewPlayer(std::vector<player>* PlayerList);
+player newPlayer(std::vector<player>* PlayerList);
 
 /** Funkcja drukuje na ekran string.
-@param string, ktory chcemy wyswietlic.
+@param in vector, ktory chcemy wyswietlic.
 */
 void printVector(std::vector<char> in);
 #endif LIBRARY_H
