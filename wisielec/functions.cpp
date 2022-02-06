@@ -27,7 +27,7 @@ gameFiles parseOrDie(int argc, char** argv)
 	string output_file_path; 
 	if (argc < 2) {
 		cout << "No input parameters provided. Exiting" << endl;
-		cout << "Please provide input and outfiles with their directory" << endl;
+		cout << "Please provide input and output files with their directory" << endl;
 		cout << "For example: -w file1.txt -i file2.txt" << endl;// Print Help screen
 		exit(1);
 	}
@@ -68,7 +68,7 @@ gameFiles parseOrDie(int argc, char** argv)
 	}
 	else
 	{
-		cout << "One file is missing \n";
+		cout << "Error. Please insert correct files!\n";
 		exit(1);
 	}
 	
